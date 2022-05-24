@@ -1,5 +1,12 @@
 FROM ubuntu:20.04
 
+ARG ANT_VERSION=1.10.12
+ARG GRADLE_VERSION=5.6.4
+ARG ANDROID_BUILD_TOOLS_VERSION=28.0.3
+ARG ANDROID_PLATFORM_VERSION=android-26
+ARG NDK_VERSION=18.1.5063045
+ARG CMAKE_VERSION=3.6.4111459
+
 USER root
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,8 +14,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
-    build-essential ccache ninja-build \
-    python3 python3-pip curl unzip \
+    git build-essential ccache ninja-build \
+    python3 python3-pip curl zip unzip \
     openjdk-8-jdk openjdk-8-jre \
     && \
   rm -rf /var/lib/apt/lists/*
@@ -21,41 +28,37 @@ RUN \
     && \
   rm -rf /var/lib/apt/lists/*
 
-RUN curl -o /tmp/gradle-5.6.4-bin.zip https://downloads.gradle-dn.com/distributions/gradle-5.6.4-bin.zip && \
-    ls -al /tmp/ && \
-    unzip -d /opt/gradle /tmp/gradle-5.6.4-bin.zip && \
-    rm /tmp/gradle-5.6.4-bin.zip
+RUN curl -o /tmp/apache-ant-$ANT_VERSION-bin.zip https://downloads.apache.org/ant/binaries/apache-ant-$ANT_VERSION-bin.zip && \
+    unzip -d /opt/ant /tmp/apache-ant-$ANT_VERSION-bin.zip && \
+    rm /tmp/apache-ant-$ANT_VERSION-bin.zip
 
-ENV ANDROID_HOME="/usr/local/android-sdk"
+RUN curl -o /tmp/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
+    unzip -d /opt/gradle /tmp/gradle-$GRADLE_VERSION-bin.zip && \
+    rm /tmp/gradle-$GRADLE_VERSION-bin.zip
 
-RUN cd ~ && mkdir "$ANDROID_HOME" .android \
-    && cd "$ANDROID_HOME" \
+ENV ANDROID_HOME="/opt/android-sdk"
+
+RUN cd ~ && mkdir $ANDROID_HOME .android \
+    && cd $ANDROID_HOME \
     && curl -o sdk.zip "https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" \
     && unzip sdk.zip \
     && rm sdk.zip \
     && echo "y\n" > /tmp/yes \
     && $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" < /tmp/yes
 
+RUN $ANDROID_HOME/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" < /tmp/yes
+RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION" < /tmp/yes
+RUN $ANDROID_HOME/tools/bin/sdkmanager "ndk;$NDK_VERSION" < /tmp/yes
+RUN $ANDROID_HOME/tools/bin/sdkmanager "cmake;$CMAKE_VERSION" < /tmp/yes
 
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "build-tools;28.0.3" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "build-tools;29.0.2" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "platforms;android-21" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "platforms;android-24" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "platforms;android-26" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "ndk;18.1.5063045" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "ndk;21.1.6352462" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "ndk;22.1.7171670" < /tmp/yes
-RUN cd "$ANDROID_HOME" && ./tools/bin/sdkmanager "cmake;3.6.4111459" < /tmp/yes
-
-RUN python3 -m pip install cmake
-
-RUN useradd ci -m -s /bin/bash -G users,dialout
+RUN useradd ci -m -s /bin/bash -G users
 USER ci
 
-ENV GRADLE_HOME=/opt/gradle/gradle-6.6.1
+ENV ANT_HOME=/opt/ant/apache-ant-$ANT_VERSION
+ENV GRADLE_HOME=/opt/gradle/gradle-$GRADLE_VERSION
 ENV GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-ENV PATH=$GRADLE_HOME/bin:$PATH
-ENV ANDROID_HOME="/usr/local/android-sdk"
-ENV ANDROID_NDK_HOME="/usr/local/android-sdk/ndk/18.1.5063045"
+ENV ANDROID_HOME="/opt/android-sdk"
+ENV ANDROID_NDK_HOME="/opt/android-sdk/ndk/$NDK_VERSION"
+ENV PATH=$ANT_HOME/bin:$GRADLE_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
 
 ENTRYPOINT bash
