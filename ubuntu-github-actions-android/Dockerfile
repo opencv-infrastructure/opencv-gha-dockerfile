@@ -32,9 +32,9 @@ RUN curl -o /tmp/apache-ant-$ANT_VERSION-bin.zip https://downloads.apache.org/an
     unzip -d /opt/ant /tmp/apache-ant-$ANT_VERSION-bin.zip && \
     rm /tmp/apache-ant-$ANT_VERSION-bin.zip
 
-RUN curl -o /tmp/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
-    unzip -d /opt/gradle /tmp/gradle-$GRADLE_VERSION-bin.zip && \
-    rm /tmp/gradle-$GRADLE_VERSION-bin.zip
+RUN mkdir -p /opt/gradle && \
+    curl -o /opt/gradle/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
+    unzip -d /opt/gradle /opt/gradle/gradle-$GRADLE_VERSION-bin.zip
 
 ENV ANDROID_HOME="/opt/android-sdk"
 
