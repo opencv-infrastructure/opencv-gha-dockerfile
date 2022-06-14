@@ -56,6 +56,7 @@ RUN \
     libgtkglext1-dev \
     libopenni2-dev \
     libglfw3-dev \
+    lcov \
     xvfb \
     pkg-config && \
   apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
@@ -69,7 +70,7 @@ RUN \
     libdc1394-22-dev \
     libgphoto2-dev \
     && \
-  mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build && \
+  mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build /build && \
   rm -rf /var/lib/apt/lists/*
 
 CMD bash

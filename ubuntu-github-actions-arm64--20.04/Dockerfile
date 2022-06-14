@@ -34,7 +34,7 @@ RUN \
      libdc1394-22-dev \
      libgphoto2-dev \
      && \
-   mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build && \
+   mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build /build && \
    rm -rf /var/lib/apt/lists/*
 
 CMD bash
