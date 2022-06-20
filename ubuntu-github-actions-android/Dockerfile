@@ -1,3 +1,6 @@
+# Version: 4.6.0-1.0.0
+# Image name: quay.io/opencv-ci/opencv-androidsdk:4.6.0-1.0.0
+
 FROM ubuntu:20.04
 
 ARG ANT_VERSION=1.10.12
@@ -14,10 +17,13 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
-    git build-essential ccache ninja-build \
+    software-properties-common \
+    build-essential ccache ninja-build \
     python3 python3-pip curl zip unzip \
     openjdk-8-jdk openjdk-8-jre \
     && \
+  add-apt-repository ppa:git-core/ppa && \
+  apt-get install -y --no-install-recommends git && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -53,6 +59,10 @@ RUN $ANDROID_HOME/tools/bin/sdkmanager "cmake;$CMAKE_VERSION" < /tmp/yes
 
 RUN useradd ci -m -s /bin/bash -G users
 USER ci
+
+RUN git config --global --add safe.directory "*" && \
+    git config --global user.email "opencv.ci" && \
+    git config --global user.name "opencv.ci"
 
 ENV ANT_HOME=/opt/ant/apache-ant-$ANT_VERSION
 ENV GRADLE_HOME=/opt/gradle/gradle-$GRADLE_VERSION

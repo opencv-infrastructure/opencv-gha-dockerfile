@@ -1,40 +1,47 @@
-# Image name: quay.io/opencv-ci/opencv-ubuntu:20.04-arm64
+# Version: 4.6.0-1.0.0
+# Image name: quay.io/opencv-ci/opencv-ubuntu-20.04-arm64:4.6.0-1.0.0
 
 FROM ubuntu:20.04
 
 RUN \
-   apt-get update && \
-   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-     cmake build-essential ccache ninja-build git wget curl zip unzip rsync mc nano time file\
-     python2-dev python-numpy \
-     python3-dev python3-numpy python3-setuptools python3-pip\
-     zlib1g-dev libjpeg-dev libpng-dev libtiff5-dev libopenjp2-7-dev \
-     libgtk-3-dev \
-     libavcodec-dev libavformat-dev libswscale-dev \
-     libtbb-dev libtbb2 \
-     ant ant-optional default-jdk \
-     hdf5-tools libhdf5-dev \
-     libleptonica-dev liblept5 tesseract-ocr tesseract-ocr-eng libtesseract-dev libtesseract4 \
-     libusb-dev libusb-1.0.0-dev libudev-dev \
-     libgdal-dev \
-     libvtk7-dev \
-     libgoogle-glog-dev \
-     libatlas-base-dev libeigen3-dev libsuitesparse-dev liblapacke-dev \
-     xvfb \
-     pkg-config && \
-   apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    software-properties-common \
+    cmake build-essential ccache ninja-build wget curl zip unzip rsync mc nano time file\
+    python2-dev python-numpy \
+    python3-dev python3-numpy python3-setuptools python3-pip\
+    zlib1g-dev libjpeg-dev libpng-dev libtiff5-dev libopenjp2-7-dev \
+    libgtk-3-dev \
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libtbb-dev libtbb2 \
+    ant ant-optional default-jdk \
+    hdf5-tools libhdf5-dev \
+    libleptonica-dev liblept5 tesseract-ocr tesseract-ocr-eng libtesseract-dev libtesseract4 \
+    libusb-dev libusb-1.0.0-dev libudev-dev \
+    libgdal-dev \
+    libvtk7-dev \
+    libgoogle-glog-dev \
+    libatlas-base-dev libeigen3-dev libsuitesparse-dev liblapacke-dev \
+    xvfb \
+    pkg-config && \
+  add-apt-repository ppa:git-core/ppa && \
+  apt-get install -y --no-install-recommends git && \
+  apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
 
 RUN \
-   apt-get update && \
-   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-     libva-dev \
-     libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-         gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-libav \
-     libopenni2-dev \
-     libdc1394-22-dev \
-     libgphoto2-dev \
-     && \
-   mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build /build && \
-   rm -rf /var/lib/apt/lists/*
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libva-dev \
+    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+        gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-libav \
+    libopenni2-dev \
+    libdc1394-22-dev \
+    libgphoto2-dev \
+    && \
+  mkdir /opencv /opencv_contrib /build && \
+  git config --global --add safe.directory "*" && \
+  git config --global user.email "opencv.ci" && \
+  git config --global user.name "opencv.ci" && \
+  rm -rf /var/lib/apt/lists/*
 
 CMD bash
