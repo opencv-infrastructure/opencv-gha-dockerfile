@@ -1,5 +1,5 @@
-# Version: 4.6.0-1.0.0
-# Image name: quay.io/opencv-ci/opencv-androidsdk:4.6.0-1.0.0
+# Version: 20220621
+# Image name: quay.io/opencv-ci/opencv-androidsdk
 
 FROM ubuntu:20.04
 
