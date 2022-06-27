@@ -1,4 +1,5 @@
-# Image name: quay.io/opencv-ci/opencv-ubuntu:20.04
+# Version: 20220621
+# Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
 
@@ -6,9 +7,11 @@ RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     software-properties-common \
-    curl git zip unzip wget rsync mc nano time \
+    curl zip unzip wget rsync mc nano time \
     file \
     && \
+  add-apt-repository ppa:git-core/ppa && \
+  apt-get install -y --no-install-recommends git && \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -58,7 +61,8 @@ RUN \
     libglfw3-dev \
     lcov \
     xvfb \
-    pkg-config && \
+    pkg-config \
+    && \
   apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
 
 RUN \
@@ -70,7 +74,10 @@ RUN \
     libdc1394-22-dev \
     libgphoto2-dev \
     && \
-  mkdir /opencv /opencv_contrib /opencv-build /opencv-contrib-build /build && \
+  mkdir /opencv /opencv_contrib /build && \
+  git config --global --add safe.directory "*" && \
+  git config --global user.email "opencv.ci" && \
+  git config --global user.name "opencv.ci" && \
   rm -rf /var/lib/apt/lists/*
 
 CMD bash
