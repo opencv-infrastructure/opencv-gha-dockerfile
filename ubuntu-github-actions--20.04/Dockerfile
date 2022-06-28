@@ -1,4 +1,4 @@
-# Version: 20220621
+# Version: 20220628
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
@@ -78,6 +78,7 @@ RUN \
   git config --global --add safe.directory "*" && \
   git config --global user.email "opencv.ci" && \
   git config --global user.name "opencv.ci" && \
+  git config --global pull.rebase false && \
   rm -rf /var/lib/apt/lists/*
 
 CMD bash
