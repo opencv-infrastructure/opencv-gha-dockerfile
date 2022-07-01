@@ -1,5 +1,6 @@
-# Version: 20220621
+# Version: 20220701
 # Image name: quay.io/opencv-ci/opencv-androidsdk
+# For 4.x branch
 
 FROM ubuntu:20.04
 
@@ -7,6 +8,7 @@ ARG ANT_VERSION=1.10.12
 ARG GRADLE_VERSION=5.6.4
 ARG ANDROID_BUILD_TOOLS_VERSION=28.0.3
 ARG ANDROID_PLATFORM_VERSION=android-26
+ARG ANDROID_TOOLS_ARCHIVE=sdk-tools-linux-3859397.zip
 ARG NDK_VERSION=18.1.5063045
 ARG CMAKE_VERSION=3.6.4111459
 
@@ -46,7 +48,7 @@ ENV ANDROID_HOME="/opt/android-sdk"
 
 RUN cd ~ && mkdir $ANDROID_HOME .android \
     && cd $ANDROID_HOME \
-    && curl -o sdk.zip "https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" \
+    && curl -o sdk.zip "https://dl.google.com/android/repository/$ANDROID_TOOLS_ARCHIVE" \
     && unzip sdk.zip \
     && rm sdk.zip \
     && echo "y\n" > /tmp/yes \
