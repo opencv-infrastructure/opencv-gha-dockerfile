@@ -1,4 +1,4 @@
-# Version: 20220701
+# Version: 20220704
 # Image name: quay.io/opencv-ci/opencv-androidsdk
 # For 3.4 branch
 
@@ -64,12 +64,10 @@ RUN git config --global --add safe.directory "*" && \
     git config --global user.name "opencv.ci"
 
 ENV ANT_HOME=/opt/ant/apache-ant-$ANT_VERSION
-ENV GRADLE_HOME=/opt/gradle/gradle-$GRADLE_VERSION
-ENV GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 ENV ANDROID_HOME="/opt/android-sdk"
 ENV ANDROID_SDK="/opt/android-sdk"
 ENV ANDROID_NDK="/opt/android-sdk/ndk/$NDK_VERSION"
 ENV ANDROID_NDK_HOME="/opt/android-sdk/ndk/$NDK_VERSION"
-ENV PATH=$ANT_HOME/bin:$GRADLE_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
+ENV PATH=$ANT_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
 
 ENTRYPOINT bash

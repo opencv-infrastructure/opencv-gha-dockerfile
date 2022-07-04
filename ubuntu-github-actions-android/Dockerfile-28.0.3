@@ -27,9 +27,9 @@ RUN \
   apt-get install -y --no-install-recommends git && \
   rm -rf /var/lib/apt/lists/*
 
-RUN curl -o /tmp/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
-    unzip -d /opt/gradle /tmp/gradle-$GRADLE_VERSION-bin.zip && \
-    rm /tmp/gradle-$GRADLE_VERSION-bin.zip
+RUN mkdir -p /opt/gradle && \
+    curl -o /opt/gradle/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
+    unzip -d /opt/gradle /opt/gradle/gradle-$GRADLE_VERSION-bin.zip
 
 ENV ANDROID_HOME="/opt/android-sdk"
 
@@ -61,6 +61,6 @@ ENV ANDROID_HOME="/opt/android-sdk"
 ENV ANDROID_SDK="/opt/android-sdk"
 ENV ANDROID_NDK="/opt/android-sdk/ndk/$NDK_VERSION"
 ENV ANDROID_NDK_HOME="/opt/android-sdk/ndk/$NDK_VERSION"
-ENV PATH=$ANT_HOME/bin:$GRADLE_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
+ENV PATH=$GRADLE_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
 
 ENTRYPOINT bash
