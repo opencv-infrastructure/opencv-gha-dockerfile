@@ -1,4 +1,4 @@
-# Version: 20220628
+# Version: 20220707
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
@@ -80,5 +80,8 @@ RUN \
   git config --global user.name "opencv.ci" && \
   git config --global pull.rebase false && \
   rm -rf /var/lib/apt/lists/*
+
+# Run docker build from the root directory of the repository
+COPY scripts/warnings-handling.py /root/scripts/warnings-handling.py
 
 CMD bash
