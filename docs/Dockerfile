@@ -27,7 +27,8 @@ RUN \
     && \
   rm -rf /var/lib/apt/lists/*
 
-RUN useradd ci -m -s /bin/bash -G users
+# GitHub Actions user's UID is 1001
+RUN useradd ci -m -s /bin/bash -G users --uid=1001
 
 USER ci
 

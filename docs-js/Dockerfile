@@ -49,8 +49,9 @@ RUN \
     # python script (opencv/platforms/js/build_js.py) has shebang and required hardly python
     ln -s /usr/bin/python3 /usr/bin/python"
 
+# GitHub Actions user`s UID is 1001
 RUN \
-  useradd ci -m -s /bin/bash -G users && \
+  useradd ci -m -s /bin/bash -G users --uid=1001 && \
   chown -R ci:ci ${EMSDK_DIR}
 
 USER ci
