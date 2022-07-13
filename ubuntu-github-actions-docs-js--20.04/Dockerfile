@@ -1,5 +1,5 @@
-# Version: 20220711
-# Image name: quay.io/opencv-ci/opencv-docs-js
+# Version: 20220713
+# Image name: quay.io/opencv-ci/opencv-docs-js-20.04
 
 FROM ubuntu:20.04
 

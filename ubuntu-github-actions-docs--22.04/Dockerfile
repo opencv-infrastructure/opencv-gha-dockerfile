@@ -1,13 +1,13 @@
-# Version: 20220711
-# Image name: quay.io/opencv-ci/opencv-docs
+# Version: 20220713
+# Image name: quay.io/opencv-ci/opencv-docs-22.04
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     software-properties-common \
-    curl git htop man zip unzip vim wget ncdu mc nano time \
+    gpg-agent curl git htop man zip unzip vim wget ncdu mc nano time \
     file \
     && \
   add-apt-repository ppa:git-core/ppa && \
@@ -21,7 +21,6 @@ RUN \
     doxygen doxygen-latex graphviz \
     p7zip-full \
     pylint flake8 \
-    python-bs4 \
     python3-bs4 \
     ant ant-optional default-jdk \
     && \
