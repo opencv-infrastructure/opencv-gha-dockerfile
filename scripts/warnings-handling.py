@@ -13,10 +13,11 @@ warnings = 0
 
 def warnings_count(file_path):
     global warnings
-    for warnings, line in enumerate(open(file_path)):
+    for line in open(file_path):
         for match in re.finditer(warning_matcher, line):
-            print(match.group(0))
-            warnings +=1
+            if match.group(0) is not None:
+                print(match.group(0))
+                warnings +=1
     return warnings
 
 def warnings_exit_code():
@@ -31,4 +32,3 @@ def warnings_exit_code():
 if __name__ == '__main__':
     warnings_count(args.file_path)
     warnings_exit_code()
-
