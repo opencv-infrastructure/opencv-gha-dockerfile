@@ -1,20 +1,22 @@
+import argparse
 import os
 import re
 import sys
 
 
+parser = argparse.ArgumentParser(description='Check warnings during a build.')
+parser.add_argument('-f','--file_path', help='Path to the log file.', default='build-log.txt')
+args = parser.parse_args()
+
 warning_matcher = re.compile(r'.*warning[: ].*', re.I | re.S)
 warnings = 0
 
-def warnings_count():
+def warnings_count(file_path):
     global warnings
-    with open(os.path.join(os.getcwd(), 'build-log.txt'), 'r') as build_log:
-        build_log_lines = build_log.readlines()
-
-    for warning in build_log_lines:
-        if warning_matcher.match(warning) is not None:
-            print(warning_matcher.match(warning).group(0))
-            warnings += 1
+    for warnings, line in enumerate(open(file_path)):
+        for match in re.finditer(warning_matcher, line):
+            print(match.group(0))
+            warnings +=1
     return warnings
 
 def warnings_exit_code():
@@ -27,5 +29,6 @@ def warnings_exit_code():
 
 
 if __name__ == '__main__':
-    warnings_count()
+    warnings_count(args.file_path)
     warnings_exit_code()
+
