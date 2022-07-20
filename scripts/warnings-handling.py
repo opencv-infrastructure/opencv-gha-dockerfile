@@ -20,15 +20,6 @@ def warnings_count(file_path):
                 warnings +=1
     return warnings
 
-def warnings_exit_code():
-    if warnings != 0:
-        print("Build has warnings.")
-        sys.exit(1)
-    else:
-        print("Build does not have warnings.")
-        sys.exit(0)
-
 
 if __name__ == '__main__':
     warnings_count(args.file_path)
-    warnings_exit_code()
