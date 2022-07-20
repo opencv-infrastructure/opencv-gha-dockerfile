@@ -8,7 +8,7 @@ ARG ANT_VERSION=1.10.12
 ARG ANDROID_BUILD_TOOLS_VERSION=24.0.3
 ARG ANDROID_PLATFORM_VERSION=android-21
 ARG ANDROID_TOOLS_ARCHIVE=tools_r25.2.5-linux.zip
-ARG NDK_VERSION=17.2.4988734
+ARG NDK_VERSION=r10e
 ARG CMAKE_VERSION=3.6.4111459
 
 USER root
@@ -53,8 +53,13 @@ RUN cd ~ && mkdir $ANDROID_HOME .android \
 
 RUN $ANDROID_HOME/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" < /tmp/yes
 RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION" < /tmp/yes
-RUN $ANDROID_HOME/tools/bin/sdkmanager "ndk;$NDK_VERSION" < /tmp/yes
 RUN $ANDROID_HOME/tools/bin/sdkmanager "cmake;$CMAKE_VERSION" < /tmp/yes
+
+# find+chmod fixes permission issue for old ndk package
+RUN cd ~ && curl -o ndk.zip "https://dl.google.com/android/repository/android-ndk-$NDK_VERSION-linux-x86_64.zip" && \
+    cd /opt/ && unzip ~/ndk.zip && rm ~/ndk.zip && \
+    chmod -R a+r /opt/android-ndk-$NDK_VERSION && \
+    find /opt/android-ndk-$NDK_VERSION -executable -exec chmod a+rx {} \;
 
 RUN useradd ci -m -s /bin/bash -G users
 USER ci
@@ -67,7 +72,7 @@ ENV ANT_HOME=/opt/ant/apache-ant-$ANT_VERSION
 ENV ANDROID_HOME="/opt/android-sdk"
 ENV ANDROID_SDK="/opt/android-sdk"
 ENV ANDROID_NDK="/opt/android-sdk/ndk/$NDK_VERSION"
-ENV ANDROID_NDK_HOME="/opt/android-sdk/ndk/$NDK_VERSION"
+ENV ANDROID_NDK_HOME="/opt/android-ndk-$NDK_VERSION"
 ENV PATH=$ANT_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
 
 ENTRYPOINT bash
