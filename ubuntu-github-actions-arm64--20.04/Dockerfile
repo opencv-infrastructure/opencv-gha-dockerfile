@@ -1,4 +1,4 @@
-# Version: 20220628
+# Version: 20220718
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04-arm64
 
 FROM ubuntu:20.04
@@ -38,11 +38,21 @@ RUN \
     libdc1394-22-dev \
     libgphoto2-dev \
     && \
-  mkdir /opencv /opencv_contrib /build && \
+  rm -rf /var/lib/apt/lists/*
+
+# Self-hosted runner UID is 1000
+RUN useradd ci -m -s /bin/bash -G users --uid=1004
+
+USER ci
+
+RUN \
+  mkdir $HOME/opencv $HOME/opencv_contrib $HOME/build && \
   git config --global --add safe.directory "*" && \
   git config --global user.email "opencv.ci" && \
   git config --global user.name "opencv.ci" && \
-  git config --global pull.rebase false && \
-  rm -rf /var/lib/apt/lists/*
+  git config --global pull.rebase false
+
+# Run docker build from the root directory of the repository
+COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
 
 CMD bash

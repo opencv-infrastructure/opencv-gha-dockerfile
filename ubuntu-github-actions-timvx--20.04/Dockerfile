@@ -1,5 +1,5 @@
-# Version: 20220720
-# Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
+# Version: 20220718
+# Image name: quay.io/opencv-ci/opencv-ubuntu-20.04-timvx
 
 FROM ubuntu:20.04
 
@@ -77,7 +77,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # Self-hosted runner UID is 1000
-RUN useradd ci -m -s /bin/bash -G users --uid=1000
+RUN useradd ci -m -s /bin/bash -G users --uid=1001
 
 USER ci
 
