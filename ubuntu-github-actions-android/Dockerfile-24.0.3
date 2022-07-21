@@ -75,7 +75,7 @@ RUN git config --global --add safe.directory "*" && \
 ENV ANT_HOME=/opt/ant/apache-ant-$ANT_VERSION
 ENV ANDROID_HOME="/opt/android-sdk"
 ENV ANDROID_SDK="/opt/android-sdk"
-ENV ANDROID_NDK="/opt/android-sdk/ndk/$NDK_VERSION"
+ENV ANDROID_NDK="/opt/android-ndk-$NDK_VERSION"
 ENV ANDROID_NDK_HOME="/opt/android-ndk-$NDK_VERSION"
 ENV PATH=$ANT_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
 
