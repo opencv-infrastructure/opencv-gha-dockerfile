@@ -7,6 +7,8 @@ FROM ubuntu:20.04
 ARG ANT_VERSION=1.10.12
 ARG ANDROID_BUILD_TOOLS_VERSION=24.0.3
 ARG ANDROID_PLATFORM_VERSION=android-21
+ARG ANDROID_PLATFORM_VERSION_TEST1=android-14
+ARG ANDROID_PLATFORM_VERSION_TEST2=android-17
 ARG ANDROID_TOOLS_ARCHIVE=tools_r25.2.5-linux.zip
 ARG NDK_VERSION=r10e
 ARG CMAKE_VERSION=3.6.4111459
@@ -53,6 +55,8 @@ RUN cd ~ && mkdir $ANDROID_HOME .android \
 
 RUN $ANDROID_HOME/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" < /tmp/yes
 RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION" < /tmp/yes
+RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION_TEST1" < /tmp/yes
+RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION_TEST2" < /tmp/yes
 RUN $ANDROID_HOME/tools/bin/sdkmanager "cmake;$CMAKE_VERSION" < /tmp/yes
 
 # find+chmod fixes permission issue for old ndk package
