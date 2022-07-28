@@ -1,4 +1,4 @@
-# Version: 20220713
+# Version: 20220728
 # Image name: quay.io/opencv-ci/opencv-docs-js-20.04
 
 FROM ubuntu:20.04
@@ -23,7 +23,6 @@ RUN \
     pylint flake8 \
     python-bs4 \
     python3-bs4 \
-    ant ant-optional default-jdk \
     && \
   rm -rf /var/lib/apt/lists/*
 

@@ -19,10 +19,6 @@ def do_the_job(src, dst):
     if os.path.isdir(doxy_path):
         pack(os.listdir(doxy_path), "doc_doxygen.zip", doxy_path)
 
-    sphinx_path = os.path.join(src, "_html")
-    if os.path.isdir(sphinx_path):
-        pack(os.listdir(sphinx_path), "doc_sphinx.zip", sphinx_path)
-
     pdfs = [f for f in os.listdir(src) if f.endswith(".pdf")]
     if len(pdfs) > 0:
         pack(pdfs, "doc_sphinx.zip", src)

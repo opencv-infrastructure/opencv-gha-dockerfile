@@ -1,4 +1,4 @@
-# Version: 20220713
+# Version: 20220728
 # Image name: quay.io/opencv-ci/opencv-docs-22.04
 
 FROM ubuntu:22.04
@@ -22,7 +22,6 @@ RUN \
     p7zip-full \
     pylint flake8 \
     python3-bs4 \
-    ant ant-optional default-jdk \
     && \
   rm -rf /var/lib/apt/lists/*
 
