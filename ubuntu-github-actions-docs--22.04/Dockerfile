@@ -1,4 +1,4 @@
-# Version: 20220728
+# Version: 20220819
 # Image name: quay.io/opencv-ci/opencv-docs-22.04
 
 FROM ubuntu:22.04
@@ -37,5 +37,8 @@ RUN \
   git config --global user.email "opencv.ci" && \
   git config --global user.name "opencv.ci" && \
   git config --global pull.rebase false
+
+# Run docker build from the root directory of the repository
+COPY scripts/patch_size.py /home/ci/scripts/patch_size.py
 
 ENTRYPOINT bash
