@@ -1,4 +1,4 @@
-# Version: 20220726
+# Version: 20220901
 # Image name: quay.io/opencv-ci/opencv-ubuntu-14.04
 
 FROM ubuntu:14.04

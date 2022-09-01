@@ -1,4 +1,4 @@
-# Version: 20220720
+# Version: 20220901
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
