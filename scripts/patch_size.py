@@ -11,6 +11,7 @@ try:
     patch_size = os.stat(args.file_path).st_size
 except IOError:
     print("Bundle file does not exist.")
+    sys.exit(0)
 
 def patch_size_convert():
     kilobytes = patch_size / 1024
