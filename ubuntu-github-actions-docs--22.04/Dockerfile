@@ -1,4 +1,4 @@
-# Version: 20220819
+# Version: 20221012
 # Image name: quay.io/opencv-ci/opencv-docs-22.04
 
 FROM ubuntu:22.04
