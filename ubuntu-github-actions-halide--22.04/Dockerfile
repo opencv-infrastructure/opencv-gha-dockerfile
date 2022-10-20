@@ -1,0 +1,84 @@
+FROM ubuntu:22.04
+
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    software-properties-common \
+    gpg-agent curl git htop man zip unzip wget ncdu mc nano time \
+    file \
+    && \
+  add-apt-repository ppa:git-core/ppa && \
+  apt-get install -y --no-install-recommends git && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    cmake \
+    build-essential \
+    ccache \
+    ninja-build \
+    python3-dev \
+    python3-numpy \
+    python3-setuptools \
+    python3-pip \
+    zlib1g-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libopenjp2-7-dev \
+    libgtk-3-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libswscale-dev \
+    ant \
+    ant-optional \
+    default-jdk \
+    hdf5-tools \
+    libhdf5-dev \
+    liblept5 \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    libtesseract-dev \
+    libtesseract4 \
+    libgdal-dev \
+    libvtk7-dev \
+    libgoogle-glog-dev \
+    libatlas-base-dev \
+    libeigen3-dev \
+    libsuitesparse-dev \
+    liblapacke-dev \
+    libceres-dev \
+    libeigen3-dev \
+    libgtkglext1-dev \
+    libopenni2-dev \
+    libglfw3-dev \
+    lcov \
+    xvfb \
+    pkg-config \
+    && \
+  apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
+
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libhalide13-0 libhalide13-0-dev \
+    && \
+  rm -rf /var/lib/apt/lists/*
+
+# Self-hosted runner UID is 1000
+RUN useradd ci -m -s /bin/bash -G users --uid=1000
+
+USER ci
+
+RUN \
+  mkdir $HOME/opencv $HOME/opencv_contrib $HOME/build && \
+  git config --global --add safe.directory "*" && \
+  git config --global user.email "opencv.ci" && \
+  git config --global user.name "opencv.ci" && \
+  git config --global pull.rebase false
+
+# Run docker build from the root directory of the repository
+COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
+
+CMD bash
