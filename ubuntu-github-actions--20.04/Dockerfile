@@ -1,4 +1,4 @@
-# Version: 20220901
+# Version: 20230410
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
@@ -14,6 +14,7 @@ RUN \
   apt-get install -y --no-install-recommends git && \
   rm -rf /var/lib/apt/lists/*
 
+# libraw: https://github.com/opencv/opencv/pull/23462
 RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -32,6 +33,7 @@ RUN \
     libpng-dev \
     libtiff5-dev \
     libopenjp2-7-dev \
+    libraw-dev \
     libgtk-3-dev \
     libavcodec-dev \
     libavformat-dev \
