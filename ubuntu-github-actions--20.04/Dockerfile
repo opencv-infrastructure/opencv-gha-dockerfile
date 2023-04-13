@@ -1,4 +1,4 @@
-# Version: 20230410
+# Version: 20230413
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
@@ -15,6 +15,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # libraw: https://github.com/opencv/opencv/pull/23462
+# reportlab, svglib: https://github.com/opencv/opencv/pull/23363
 RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -65,7 +66,8 @@ RUN \
     xvfb \
     pkg-config \
     && \
-  apt-get clean && python3 -m pip install --upgrade pip && pip install requests pylint==2.4.4 && pip cache purge
+  apt-get clean && python3 -m pip install --upgrade pip && \
+  pip install requests pylint==2.4.4 reportlab svglib && pip cache purge
 
 RUN \
   apt-get update && \
