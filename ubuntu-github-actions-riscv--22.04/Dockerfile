@@ -24,7 +24,7 @@ RUN cd /opt \
   && rm -rf sc-dt \
   && rm 202308-sc-dt.tar.gz
 
-RUN useradd ci -m -s /bin/bash -G users
+RUN useradd ci -m -s /bin/bash -G users --uid=1100
 
 USER ci
 
