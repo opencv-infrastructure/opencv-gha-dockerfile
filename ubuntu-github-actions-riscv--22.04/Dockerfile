@@ -24,10 +24,6 @@ RUN cd /opt \
   && rm -rf sc-dt \
   && rm 202308-sc-dt.tar.gz
 
-RUN useradd ci -m -s /bin/bash -G users --uid=1100
-
-USER ci
-
 RUN \
   mkdir $HOME/opencv $HOME/opencv_contrib $HOME/build && \
   git config --global --add safe.directory "*" && \
@@ -35,7 +31,6 @@ RUN \
   git config --global user.name "opencv.ci" && \
   git config --global pull.rebase false
 
-# Run docker build from the root directory of the repository
-COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
+COPY scripts/warnings-handling.py $HOME/scripts/warnings-handling.py
 
 CMD bash
