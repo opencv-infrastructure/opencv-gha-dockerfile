@@ -25,12 +25,14 @@ RUN cd /opt \
   && rm 202308-sc-dt.tar.gz
 
 RUN \
-  mkdir $HOME/opencv $HOME/opencv_contrib $HOME/build && \
+  mkdir -p /home/ci/opencv /home/ci/opencv_contrib /home/ci/build && \
   git config --global --add safe.directory "*" && \
   git config --global user.email "opencv.ci" && \
   git config --global user.name "opencv.ci" && \
   git config --global pull.rebase false
 
 COPY scripts/warnings-handling.py $HOME/scripts/warnings-handling.py
+
+WORKDIR /home/ci
 
 CMD bash
