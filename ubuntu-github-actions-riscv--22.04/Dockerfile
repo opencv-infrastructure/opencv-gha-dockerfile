@@ -1,28 +1,124 @@
 # Version: 20230910
-# Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-scr
+# Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-main
+
+# 1. LLVM toolchain
+
+FROM ubuntu:22.04 AS builder_llvm
+ARG LLVM_TAG=llvmorg-16.0.6
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y \
+    cmake \
+    ccache \
+    ninja-build \
+    git \
+    g++ \
+    python3
+
+# 📄 Clone repository
+RUN git clone \
+        -b ${LLVM_TAG} \
+        --depth=1 \
+        --recurse-submodules \
+        --shallow-submodules \
+        https://github.com/llvm/llvm-project
+WORKDIR llvm-project
+
+# 🛠 Build toolchain
+RUN cmake \
+    -S llvm \
+    -B build \
+    -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/opt/rvv-llvm \
+    -DLLVM_ENABLE_PROJECTS='clang;lld;compiler-rt' \
+    -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+    -DCMAKE_BUILD_TYPE=Release
+RUN cmake --build build --target install
+
+#==============================================================
+# 2. GCC toolchain
+
+FROM ubuntu:22.04 AS builder_gcc
+ARG COLLAB_TAG=2023.09.27
+ARG GCC_TAG=releases/gcc-13.2.0
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y \
+    cmake \
+    ccache \
+    ninja-build \
+    git \
+    autoconf \
+    automake \
+    autotools-dev \
+    curl \
+    python3 \
+    python3-pip \
+    libmpc-dev \
+    libmpfr-dev \
+    libgmp-dev \
+    gawk \
+    build-essential \
+    bison \
+    flex \
+    texinfo \
+    gperf \
+    libtool \
+    patchutils \
+    bc \
+    zlib1g-dev \
+    libexpat-dev \
+    libglib2.0-dev
+
+# 📄 Clone repository
+RUN git clone \
+        --depth=1 \
+        -b ${COLLAB_TAG} \
+        https://github.com/riscv-collab/riscv-gnu-toolchain
+
+WORKDIR riscv-gnu-toolchain
+
+# Use latest GCC for RVV support
+RUN git submodule init && git submodule update
+RUN git -C gcc remote update && git -C gcc fetch origin ${GCC_TAG} && git -C gcc checkout ${GCC_TAG}
+
+RUN ./configure --enable-linux --prefix=/opt/riscv
+RUN make -j${CPUNUM} linux
+RUN make -j${CPUNUM} build-qemu
+
+#====================================================================
+# 3. Common utils
 
 FROM ubuntu:22.04
+COPY --from=builder_llvm /opt/rvv-llvm /opt/rvv-llvm
+COPY --from=builder_gcc /opt/riscv /opt/riscv
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
-  apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  apt update && apt install -y \
     software-properties-common \
-    cmake ccache ninja-build gpg-agent curl git htop man zip unzip vim wget ncdu mc nano time \
-    file \
-    && \
-  add-apt-repository ppa:git-core/ppa && \
-  apt-get install -y --no-install-recommends git && \
-  rm -rf /var/lib/apt/lists/*
+    cmake \
+    ccache \
+    ninja-build \
+    gpg-agent \
+    curl \
+    git \
+    htop \
+    man \
+    zip \
+    unzip \
+    vim \
+    wget \
+    ncdu \
+    mc \
+    nano \
+    time \
+    file
 
-ADD https://dl.opencv.org/toolchains/202308-sc-dt.tar.gz /opt/
-RUN cd /opt \
-  && echo "c790b1287188ec88ffc685984f3aa548b8085017  202308-sc-dt.tar.gz" | sha1sum -c - \
-  && tar -xvf 202308-sc-dt.tar.gz \
-  && mv sc-dt/llvm rvv-llvm \
-  && mv sc-dt/riscv-gcc riscv \
-  && mv sc-dt/tools tools \
-  && rm -rf sc-dt \
-  && rm 202308-sc-dt.tar.gz
+RUN \
+  add-apt-repository ppa:git-core/ppa && \
+  apt update && apt install -y \
+    git
 
 RUN \
   mkdir -p /home/ci/opencv /home/ci/opencv_contrib /home/ci/build /home/ci/scripts && \
