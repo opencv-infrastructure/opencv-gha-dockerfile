@@ -1,10 +1,10 @@
-# Version: 20220721
+# Version: 20231107
 # Image name: quay.io/opencv-ci/opencv-androidsdk-28
 # For 4.x branch
 
 FROM ubuntu:20.04
 
-ARG GRADLE_VERSION=5.6.4
+ARG GRADLE_VERSION=8.3
 ARG ANDROID_BUILD_TOOLS_VERSION=28.0.3
 ARG ANDROID_PLATFORM_VERSION=android-26
 ARG ANDROID_TOOLS_ARCHIVE=sdk-tools-linux-3859397.zip
@@ -28,7 +28,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/gradle && \
-    curl -o /opt/gradle/gradle-$GRADLE_VERSION-bin.zip https://downloads.gradle-dn.com/distributions/gradle-$GRADLE_VERSION-bin.zip && \
+    curl -L -o /opt/gradle/gradle-$GRADLE_VERSION-bin.zip https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip && \
     unzip -d /opt/gradle /opt/gradle/gradle-$GRADLE_VERSION-bin.zip
 
 ENV ANDROID_HOME="/opt/android-sdk"
