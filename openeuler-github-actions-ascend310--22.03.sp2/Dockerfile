@@ -13,7 +13,13 @@ RUN yum install -y \
     python-pip \
     python3-devel \
     xorg-x11-server-Xvfb \
-    ninja-build
+    ninja-build \
+    libjpeg-devel \
+    libpng-devel \
+    libtiff-devel \
+    openjpeg2-devel \
+    LibRaw-devel \
+    gtk3-devel
 
 # Install CANN
 RUN wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-"$(uname -i)".run && \
@@ -50,7 +56,8 @@ RUN pip install \
     decorator \
     scipy \
     attrs \
-    psutil
+    psutil \
+    requests
 
 RUN mkdir $HOME/opencv $HOME/opencv_contrib $HOME/build && \
     git config --global --add safe.directory "*" && \
