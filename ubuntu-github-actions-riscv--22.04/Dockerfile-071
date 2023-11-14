@@ -1,0 +1,39 @@
+# Version: 20231030
+# Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-071
+
+FROM ubuntu:22.04 AS dl_base
+
+ARG TOOLCHAIN_ARC=riscv64-linux-x86_64-20210618.tar.gz
+ADD https://dl.opencv.org/toolchains/${TOOLCHAIN_ARC} /opt/
+RUN cd /opt && tar -xf ${TOOLCHAIN_ARC} && rm -f ${TOOLCHAIN_ARC}
+
+FROM ubuntu:22.04
+COPY --from=dl_base /opt/riscv64-linux-x86_64 /opt/riscv
+
+ENV PATH=/opt/riscv/bin:${PATH}
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y \
+    software-properties-common \
+    cmake \
+    ccache \
+    ninja-build \
+    python3
+
+RUN \
+  add-apt-repository ppa:git-core/ppa && \
+  apt update && apt install -y \
+    git
+
+RUN \
+  mkdir -p /home/ci/opencv /home/ci/opencv_contrib /home/ci/build /home/ci/scripts && \
+  git config --global --add safe.directory "*" && \
+  git config --global user.email "opencv.ci" && \
+  git config --global user.name "opencv.ci" && \
+  git config --global pull.rebase false
+
+COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
+
+WORKDIR /home/ci
+
+CMD bash
