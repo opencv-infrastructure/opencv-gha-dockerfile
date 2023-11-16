@@ -46,10 +46,11 @@ RUN cd ~ && mkdir $ANDROID_HOME .android tmp \
     && echo "y\n" > /tmp/yes \
     && $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" < /tmp/yes
 
-RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" < /tmp/yes
-RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION" < /tmp/yes
-RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION" < /tmp/yes
-RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;$CMAKE_VERSION" < /tmp/yes
+RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
+RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;$ANDROID_PLATFORM_VERSION"
+RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
+RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;$CMAKE_VERSION"
 
 # Self-hosted runner UID is 1000
 RUN useradd ci -m -s /bin/bash -G users --uid=1000
