@@ -9,7 +9,7 @@ ARG ANDROID_BUILD_TOOLS_VERSION=30.0.3
 ARG ANDROID_PLATFORM_VERSION=android-26
 ARG ANDROID_TOOLS_ARCHIVE=commandlinetools-linux-6858069_latest.zip
 ARG NDK_VERSION=23.1.7779620
-ARG CMAKE_VERSION=3.22.1
+ARG CMAKE_VERSION=3.18.1
 
 USER root
 
@@ -21,7 +21,7 @@ RUN \
     software-properties-common \
     build-essential ccache ninja-build \
     python3 python3-pip curl zip unzip file \
-    openjdk-8-jdk openjdk-17-jre libncurses5 tree \
+    openjdk-8-jdk openjdk-17-jre libncurses5 \
     && \
   add-apt-repository ppa:git-core/ppa && \
   apt-get install -y --no-install-recommends git && \
@@ -42,9 +42,7 @@ RUN cd ~ && mkdir $ANDROID_HOME .android tmp \
     && find $ANDROID_HOME -executable -exec chmod a+rx {} \; \
     && mkdir -p $ANDROID_HOME/cmdline-tools/latest \
     && mv cmdline-tools/* $ANDROID_HOME/cmdline-tools/latest/ \
-    && tree $ANDROID_HOME \
-    && echo "y\n" > /tmp/yes \
-    && $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" < /tmp/yes
+    && yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools"
 
 RUN yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
