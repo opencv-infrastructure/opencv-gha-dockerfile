@@ -59,6 +59,7 @@ RUN git config --global --add safe.directory "*" && \
     git config --global user.name "opencv.ci" && \
     git config --global pull.rebase false
 
+ENV GRADLE_VERSION=$GRADLE_VERSION
 ENV GRADLE_HOME=/opt/gradle/gradle-$GRADLE_VERSION
 ENV GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 ENV ANDROID_HOME="/opt/android-sdk"
