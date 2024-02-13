@@ -1,4 +1,4 @@
-# Version: 20231201
+# Version: 20240213
 # Image name: quay.io/opencv-ci/opencv-androidsdk-30
 # For 4.x branch
 
@@ -67,5 +67,8 @@ ENV ANDROID_SDK="/opt/android-sdk"
 ENV ANDROID_NDK="/opt/android-sdk/ndk/$NDK_VERSION"
 ENV ANDROID_NDK_HOME="/opt/android-sdk/ndk/$NDK_VERSION"
 ENV PATH=$GRADLE_HOME/bin:$ANDROID_HOME/cmake/$CMAKE_VERSION/bin:$PATH
+
+# Run docker build from the root directory of the repository
+COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
 
 ENTRYPOINT bash
