@@ -1,4 +1,4 @@
-# Version: 20221012
+# Version: 20240219
 # Image name: quay.io/opencv-ci/opencv-docs-22.04
 
 FROM ubuntu:22.04
@@ -18,12 +18,27 @@ RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     cmake build-essential \
-    doxygen doxygen-latex graphviz \
+    doxygen-latex graphviz \
     p7zip-full \
     pylint flake8 \
     python3-bs4 \
     && \
   rm -rf /var/lib/apt/lists/*
+
+
+# Install fresh Doxygen
+ARG doxygen_version=doxygen-1.9.8
+ARG doxygen_urlbase=https://github.com/doxygen/doxygen/releases/download/Release_1_9_8
+ARG doxygen_archive=${doxygen_version}.linux.bin.tar.gz
+ARG doxygen_sha1sum=cc270e6c19eb699f98aa15cb4dfab4d1d32d9e7a
+ADD ${doxygen_urlbase}/${doxygen_archive} /opt/
+RUN \
+  cd /opt \
+  && echo "${doxygen_sha1sum} ${doxygen_archive}" | sha1sum -c \
+  && tar -xvf ${doxygen_archive} \
+  && rm -rf ${doxygen_archive}
+ENV PATH=/opt/${doxygen_version}/bin:${PATH}
+
 
 # GitHub Actions user's UID is 1001
 RUN useradd ci -m -s /bin/bash -G users --uid=1001
