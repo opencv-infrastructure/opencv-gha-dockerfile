@@ -1,4 +1,4 @@
-# Version: 20231228
+# Version: 20240220
 # Image name: quay.io/opencv-ci/opencv-openeuler-22.03.sp2-ascend310
 
 FROM openeuler/openeuler:22.03-lts-sp2
@@ -22,24 +22,21 @@ RUN yum install -y \
     gtk3-devel
 
 # Install CANN
-RUN wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C15SPC703/Ascend-cann-toolkit_7.0.0.alpha003_linux-"$(uname -i)".run && \
-    chmod +x Ascend-cann-toolkit_7.0.0.alpha003_linux-"$(uname -i)".run && \
-    ./Ascend-cann-toolkit_7.0.0.alpha003_linux-"$(uname -i)".run --quiet --install && \
-    rm -f ./Ascend-cann-toolkit_7.0.0.alpha003_linux-"$(uname -i)".run
+RUN wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C17SPC701/Ascend-cann-toolkit_8.0.RC1.alpha001_linux-"$(uname -i)".run && \
+    chmod +x Ascend-cann-toolkit_8.0.RC1.alpha001_linux-"$(uname -i)".run && \
+    ./Ascend-cann-toolkit_8.0.RC1.alpha001_linux-"$(uname -i)".run --quiet --install && \
+    rm -f ./Ascend-cann-toolkit_8.0.RC1.alpha001_linux-"$(uname -i)".run
 
 # Install kernels
-RUN wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C15SPC703/Ascend-cann-kernels-310p_7.0.0.alpha003_linux.run && \
-    chmod +x Ascend-cann-kernels-310p_7.0.0.alpha003_linux.run && \
-    ./Ascend-cann-kernels-310p_7.0.0.alpha003_linux.run --quiet --install && \
-    rm -f ./Ascend-cann-kernels-310p_7.0.0.alpha003_linux.run
+RUN wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C17SPC701/Ascend-cann-kernels-310p_8.0.RC1.alpha001_linux.run && \
+    chmod +x Ascend-cann-kernels-310p_8.0.RC1.alpha001_linux.run && \
+    ./Ascend-cann-kernels-310p_8.0.RC1.alpha001_linux.run --quiet --install && \
+    rm -f ./Ascend-cann-kernels-310p_8.0.RC1.alpha001_linux.run
 
 # Self-hosted runner UID is 1001, matches user id on host.
 RUN groupadd -g 1000 HwHiAiUser && \
     useradd ci -m -s /bin/bash -G users --uid=1001 && \
     usermod -a -G HwHiAiUser ci
-
-# Workaround for AscendC build bug with ninja, remove this line for next cann version.
-RUN sed -i "/\$(MAKE)/d" /usr/local/Ascend/ascend-toolkit/latest/compiler/tikcpp/ascendc_kernel_cmake/function.cmake
 
 USER ci
 
