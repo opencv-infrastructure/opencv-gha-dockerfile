@@ -1,4 +1,4 @@
-# Version: 20220728
+# Version: 20240219
 # Image name: quay.io/opencv-ci/opencv-docs-js-20.04
 
 FROM ubuntu:20.04
@@ -18,7 +18,7 @@ RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     cmake build-essential \
-    doxygen doxygen-latex graphviz \
+    doxygen-latex graphviz \
     p7zip-full \
     pylint flake8 \
     python-bs4 \
@@ -48,6 +48,21 @@ RUN \
     # python script (opencv/platforms/js/build_js.py) has shebang and required hardly python
     ln -s /usr/bin/python3 /usr/bin/python"
 
+
+# Install fresh Doxygen
+ARG doxygen_version=doxygen-1.9.8
+ARG doxygen_urlbase=https://github.com/doxygen/doxygen/releases/download/Release_1_9_8
+ARG doxygen_archive=${doxygen_version}.linux.bin.tar.gz
+ARG doxygen_sha1sum=cc270e6c19eb699f98aa15cb4dfab4d1d32d9e7a
+ADD ${doxygen_urlbase}/${doxygen_archive} /opt/
+RUN \
+  cd /opt \
+  && echo "${doxygen_sha1sum} ${doxygen_archive}" | sha1sum -c \
+  && tar -xvf ${doxygen_archive} \
+  && rm -rf ${doxygen_archive}
+ENV PATH=/opt/${doxygen_version}/bin:${PATH}
+
+
 # GitHub Actions user`s UID is 1001
 RUN \
   useradd ci -m -s /bin/bash -G users --uid=1001 && \
@@ -65,7 +80,7 @@ RUN \
 
 COPY scripts/pack_docs.py /home/ci/scripts/
 
-ENV PATH=${EMSDK_DIR}:${EMSDK_DIR}/upstream/emscripten:${EMSDK_DIR}/node/14.18.2_64bit/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=${EMSDK_DIR}:${EMSDK_DIR}/upstream/emscripten:${EMSDK_DIR}/node/14.18.2_64bit/bin:${PATH}
 ENV EMSDK=${EMSDK_DIR}
 ENV EM_CONFIG=${EMSDK_DIR}/.emscripten
 ENV EM_CACHE=${EMSDK_DIR}/upstream/emscripten/cache
