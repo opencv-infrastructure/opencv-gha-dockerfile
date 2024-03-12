@@ -1,7 +1,7 @@
 # Version: 20230724
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04-openvino
 
-FROM openvino/ubuntu20_dev:2023.1.0
+FROM openvino/ubuntu20_dev:2024.0.0
 
 USER root
 
