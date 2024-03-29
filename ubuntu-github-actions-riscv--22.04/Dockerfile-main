@@ -1,4 +1,4 @@
-# Version: 20230910
+# Version: 20240329
 # Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-main
 
 # 1. LLVM toolchain
@@ -113,6 +113,7 @@ RUN \
     mc \
     nano \
     time \
+    rsync \
     file
 
 RUN \
