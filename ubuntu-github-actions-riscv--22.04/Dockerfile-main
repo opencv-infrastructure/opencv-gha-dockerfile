@@ -1,10 +1,11 @@
-# Version: 20240329
+# Version: 20240709
 # Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-main
+# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-main -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-main:20240709 .
 
 # 1. LLVM toolchain
 
 FROM ubuntu:22.04 AS builder_llvm
-ARG LLVM_TAG=llvmorg-16.0.6
+ARG LLVM_TAG=llvmorg-17.0.6
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
@@ -39,8 +40,8 @@ RUN cmake --build build --target install
 # 2. GCC toolchain
 
 FROM ubuntu:22.04 AS builder_gcc
-ARG COLLAB_TAG=2023.09.27
-ARG GCC_TAG=releases/gcc-13.2.0
+ARG COLLAB_TAG=2024.04.12
+ARG GCC_TAG=releases/gcc-14.1.0
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
