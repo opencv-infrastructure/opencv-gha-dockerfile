@@ -1,0 +1,77 @@
+# Version: 20240709
+# Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc
+# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20240709 .
+
+# 1. Build toolchain
+
+FROM ubuntu:22.04 AS builder
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y \
+    cmake \
+    ccache \
+    ninja-build \
+    git \
+    g++ \
+    python3 \
+    wget
+
+ARG DL_ID=1q_f7wqvi8sPrEC5uq4uKNE3iZLbKgELA
+ARG DL_FNAME=sc-dt-2024.05.tar.gz
+ARG DL_SHA1=5b31f36882ebbba6fe34fa7baa40f7742685354f
+    
+WORKDIR /opt
+RUN \
+  wget \
+    -O ${DL_FNAME} \
+    "https://drive.usercontent.google.com/download?id=${DL_ID}&export=download&authuser=0&confirm=t" \
+  && echo "${DL_SHA1} ${DL_FNAME}" | sha1sum -c \
+  && tar -xvf ${DL_FNAME} \
+  && rm -rf sc-dt/docs sc-dt/workspace sc-dt/eclipse sc-dt/vscode-extension
+
+#====================================================================
+# 2. Common utils
+
+FROM ubuntu:22.04
+COPY --from=builder /opt/sc-dt /opt/sc-dt
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN \
+  apt update && apt install -y \
+    software-properties-common \
+    cmake \
+    ccache \
+    ninja-build \
+    gpg-agent \
+    curl \
+    git \
+    htop \
+    man \
+    zip \
+    unzip \
+    vim \
+    wget \
+    ncdu \
+    mc \
+    nano \
+    time \
+    rsync \
+    file
+
+RUN \
+  add-apt-repository ppa:git-core/ppa && \
+  apt update && apt install -y \
+    git
+
+RUN \
+  mkdir -p /home/ci/opencv /home/ci/opencv_contrib /home/ci/build /home/ci/scripts && \
+  git config --global --add safe.directory "*" && \
+  git config --global user.email "opencv.ci" && \
+  git config --global user.name "opencv.ci" && \
+  git config --global pull.rebase false
+
+COPY scripts/warnings-handling.py /home/ci/scripts/warnings-handling.py
+
+WORKDIR /home/ci
+
+CMD bash
