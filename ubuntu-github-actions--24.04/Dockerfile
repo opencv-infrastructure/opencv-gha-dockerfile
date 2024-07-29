@@ -1,4 +1,4 @@
-# Version: 20240424
+# Version: 20240729
 # Image name: quay.io/opencv-ci/opencv-ubuntu-24.04
 
 FROM ubuntu:24.04
@@ -29,7 +29,7 @@ RUN \
     libtiff5-dev \
     libopenjp2-7-dev \
     libavif-dev \
-    libgtk-3-dev \
+    libgtk-4-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
@@ -55,7 +55,6 @@ RUN \
     pkg-config \
     && \
   apt-get clean && \
-  python3 -m pip install --upgrade --break-system-packages pip && \
   pip install --break-system-packages requests pylint==2.4.4 reportlab svglib pycairo rlPyCairo && pip cache purge
 
 RUN \
