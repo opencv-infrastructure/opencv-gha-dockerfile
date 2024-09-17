@@ -47,7 +47,6 @@ RUN \
     liblapacke-dev \
     libceres-dev \
     libeigen3-dev \
-    libgtkglext1-dev \
     libopenni2-dev \
     libglfw3-dev \
     lcov \
