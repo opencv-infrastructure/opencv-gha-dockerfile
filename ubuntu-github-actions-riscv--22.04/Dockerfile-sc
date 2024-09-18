@@ -1,6 +1,6 @@
-# Version: 20240709
+# Version: 20240918
 # Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc
-# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20240709 .
+# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20240918 .
 
 # 1. Build toolchain
 
@@ -16,9 +16,9 @@ RUN apt update && apt install -y \
     python3 \
     wget
 
-ARG DL_ID=1q_f7wqvi8sPrEC5uq4uKNE3iZLbKgELA
-ARG DL_FNAME=sc-dt-2024.05.tar.gz
-ARG DL_SHA1=5b31f36882ebbba6fe34fa7baa40f7742685354f
+ARG DL_ID=1bon577_SBAIwLkxDstTtV7f18ZkRNJ5S
+ARG DL_FNAME=sc-dt-2024.08.tar.gz
+ARG DL_SHA1=e6e64645a249b579a39b729e9b75f6d7cef98a73
     
 WORKDIR /opt
 RUN \
@@ -27,7 +27,13 @@ RUN \
     "https://drive.usercontent.google.com/download?id=${DL_ID}&export=download&authuser=0&confirm=t" \
   && echo "${DL_SHA1} ${DL_FNAME}" | sha1sum -c \
   && tar -xvf ${DL_FNAME} \
-  && rm -rf sc-dt/docs sc-dt/workspace sc-dt/eclipse sc-dt/vscode-extension
+  && rm -rf \
+    sc-dt/docs \
+    sc-dt/workspace \
+    sc-dt/eclipse \
+    sc-dt/vscode-extension \
+    sc-dt/tools/bin/qemu-system-* \
+    sc-dt/tools/bin/qemu-{aarch64,riscv32,x86_64}
 
 #====================================================================
 # 2. Common utils
