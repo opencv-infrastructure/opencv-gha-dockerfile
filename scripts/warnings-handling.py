@@ -15,6 +15,7 @@ supression_list = [
     '--illegal-access=permit; support was removed in 17.0', # OpenJDK warning not related to build
     'warning: section flags ignored on section redeclaration', # x86 32-bit warning in jpeg-turbo
     'warning: [removal] finalize() in Object has been deprecated and marked for removal', # https://github.com/opencv/opencv/issues/22260
+    'warning : Publisher name (CN=CMake) does not match signing certificate subject: CN=CMake Test Cert. Updating Publisher name.'
 ]
 warnings = 0
 
