@@ -1,4 +1,4 @@
-# Version: 20240729
+# Version: 20241031
 # Image name: quay.io/opencv-ci/opencv-ubuntu-24.04
 
 FROM ubuntu:24.04
@@ -12,6 +12,7 @@ RUN \
 
 # reportlab, svglib, pycairo: https://github.com/opencv/opencv/pull/23363
 # libavif: https://github.com/opencv/opencv/pull/23596
+# libjxl: https://github.com/opencv/opencv/pull/26379
 RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -23,12 +24,14 @@ RUN \
     python3-numpy \
     python3-setuptools \
     python3-pip \
+    pylint \
     zlib1g-dev \
     libjpeg-dev \
     libpng-dev \
     libtiff5-dev \
     libopenjp2-7-dev \
     libavif-dev \
+    libjxl-dev \
     libgtk-4-dev \
     libavcodec-dev \
     libavformat-dev \
@@ -55,7 +58,7 @@ RUN \
     pkg-config \
     && \
   apt-get clean && \
-  pip install --break-system-packages requests pylint==2.4.4 reportlab svglib pycairo rlPyCairo && pip cache purge
+  pip install --break-system-packages requests reportlab svglib pycairo rlPyCairo && pip cache purge
 
 RUN \
   apt-get update && \
