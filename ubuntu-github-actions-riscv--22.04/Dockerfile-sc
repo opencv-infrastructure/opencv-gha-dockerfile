@@ -1,6 +1,6 @@
-# Version: 20240918
+# Version: 20241102
 # Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc
-# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20240918 .
+# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20241102 .
 
 # 1. Build toolchain
 
@@ -16,9 +16,9 @@ RUN apt update && apt install -y \
     python3 \
     wget
 
-ARG DL_ID=1bon577_SBAIwLkxDstTtV7f18ZkRNJ5S
-ARG DL_FNAME=sc-dt-2024.08.tar.gz
-ARG DL_SHA1=e6e64645a249b579a39b729e9b75f6d7cef98a73
+ARG DL_ID=1dww_ZMX68nTf5UmlDzDN3fJy4yLr2i4u
+ARG DL_FNAME=sc-dt-2024.09.tar.gz
+ARG DL_SHA1=930802177556144be21b350451d25f44529c8782
     
 WORKDIR /opt
 RUN \
