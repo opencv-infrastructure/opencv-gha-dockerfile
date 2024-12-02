@@ -1,4 +1,4 @@
-# Version: 20240219
+# Version: 20241202
 # Image name: quay.io/opencv-ci/opencv-docs-22.04
 
 FROM ubuntu:22.04
@@ -27,10 +27,10 @@ RUN \
 
 
 # Install fresh Doxygen
-ARG doxygen_version=doxygen-1.9.8
-ARG doxygen_urlbase=https://github.com/doxygen/doxygen/releases/download/Release_1_9_8
+ARG doxygen_version=doxygen-1.12.0
+ARG doxygen_urlbase=https://github.com/doxygen/doxygen/releases/download/Release_1_12_0
 ARG doxygen_archive=${doxygen_version}.linux.bin.tar.gz
-ARG doxygen_sha1sum=cc270e6c19eb699f98aa15cb4dfab4d1d32d9e7a
+ARG doxygen_sha1sum=c50fc71ba9b5e431f0f0f21c5dc8559f47f06007
 ADD ${doxygen_urlbase}/${doxygen_archive} /opt/
 RUN \
   cd /opt \
