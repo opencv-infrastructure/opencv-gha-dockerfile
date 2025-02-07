@@ -1,4 +1,4 @@
-# Version: 20230413
+# Version: 20250207
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04
 
 FROM ubuntu:20.04
@@ -35,6 +35,7 @@ RUN \
     libtiff5-dev \
     libopenjp2-7-dev \
     libraw-dev \
+    libopenexr-dev \
     libgtk-3-dev \
     libavcodec-dev \
     libavformat-dev \
