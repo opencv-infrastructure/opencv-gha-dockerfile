@@ -1,4 +1,4 @@
-# Version: 20241031
+# Version: 20250207
 # Image name: quay.io/opencv-ci/opencv-ubuntu-24.04
 
 FROM ubuntu:24.04
@@ -32,7 +32,8 @@ RUN \
     libopenjp2-7-dev \
     libavif-dev \
     libjxl-dev \
-    libgtk-4-dev \
+    libopenexr-dev \
+    libgtk-3-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
