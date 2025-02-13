@@ -68,7 +68,7 @@ RUN \
     pkg-config \
     && \
   apt-get clean && python3 -m pip install --upgrade pip && \
-  pip install requests pylint==2.4.4 reportlab svglib && pip cache purge
+  pip install --break-system-packages requests pylint==2.4.4 reportlab svglib pycairo rlPyCairo && pip cache purge
 
 RUN \
   apt-get update && \
