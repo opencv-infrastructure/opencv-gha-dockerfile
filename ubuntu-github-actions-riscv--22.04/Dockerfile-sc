@@ -16,15 +16,15 @@ RUN apt update && apt install -y \
     python3 \
     wget
 
-ARG DL_ID=1dww_ZMX68nTf5UmlDzDN3fJy4yLr2i4u
-ARG DL_FNAME=sc-dt-2024.09.tar.gz
-ARG DL_SHA1=930802177556144be21b350451d25f44529c8782
-    
+ARG DL_ID=8Atb2bcYjZS8eHE
+ARG DL_FNAME=sc-dt-2024.12.tar.gz
+ARG DL_SHA1=11ee9c351d07c8c2322ea14382916c500e1c7c46
+
 WORKDIR /opt
 RUN \
   wget \
     -O ${DL_FNAME} \
-    "https://drive.usercontent.google.com/download?id=${DL_ID}&export=download&authuser=0&confirm=t" \
+    "https://drive.syntacore.com/s/${DL_ID}/download?path=%2F2024%2F2024.12%2F${DL_FNAME}" \
   && echo "${DL_SHA1} ${DL_FNAME}" | sha1sum -c \
   && tar -xvf ${DL_FNAME} \
   && rm -rf \
