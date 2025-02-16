@@ -1,6 +1,6 @@
-# Version: 20241102
+# Version: 20250216
 # Image name: quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc
-# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20241102 .
+# Command: docker build -f ubuntu-github-actions-riscv--22.04/Dockerfile-sc -t quay.io/opencv-ci/opencv-ubuntu-22.04-riscv-sc:20250216 .
 
 # 1. Build toolchain
 
@@ -16,15 +16,14 @@ RUN apt update && apt install -y \
     python3 \
     wget
 
-ARG DL_ID=1dww_ZMX68nTf5UmlDzDN3fJy4yLr2i4u
-ARG DL_FNAME=sc-dt-2024.09.tar.gz
-ARG DL_SHA1=930802177556144be21b350451d25f44529c8782
+ARG DL_FNAME=sc-dt-2024.12.tar.gz
+ARG DL_SHA1=84073ca89c2bca5ed272547394cbf63726c416bc
     
 WORKDIR /opt
 RUN \
   wget \
     -O ${DL_FNAME} \
-    "https://drive.usercontent.google.com/download?id=${DL_ID}&export=download&authuser=0&confirm=t" \
+    "https://drive.syntacore.com/s/8Atb2bcYjZS8eHE/download?path=%2F2024%2F2024.12&files=sc-dt-2024.12.tar.gz" \
   && echo "${DL_SHA1} ${DL_FNAME}" | sha1sum -c \
   && tar -xvf ${DL_FNAME} \
   && rm -rf \
