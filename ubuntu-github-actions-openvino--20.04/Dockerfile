@@ -1,4 +1,4 @@
-# Version: 20230724
+# Version: 20250207
 # Image name: quay.io/opencv-ci/opencv-ubuntu-20.04-openvino
 
 FROM openvino/ubuntu20_dev:2024.0.0
@@ -32,6 +32,7 @@ RUN \
     libpng-dev \
     libtiff5-dev \
     libopenjp2-7-dev \
+    libopenexr-dev \
     libgtk-3-dev \
     libavcodec-dev \
     libavformat-dev \
